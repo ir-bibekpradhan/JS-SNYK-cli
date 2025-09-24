@@ -7,14 +7,14 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "react": "18.0.0-alpha-255221c86-20211103",     
-    "webpack": "2.1.0-beta.25",                        
-    "next": "14.0.0-canary.22",                      
-    "typescript": "5.3.0-dev.20230904",                
-    "eslint": "9.0.0-preview.0",                        
-    "jest": "29.7.0-next.0",                            
-    "vue": "3.4.0-rc.2",                                
-    "vite": "5.0.0-beta.1"                             
+    "react": "18.0.0-alpha-255221c86-20211103",
+    "webpack": "2.1.0-beta.25",
+    "next": "14.0.0-canary.22",
+    "typescript": "5.3.0-dev.20230904",
+    "eslint": "9.0.0-preview.0",
+    "jest": "29.7.0-next.0",
+    "vue": "3.4.0-rc.2",
+    "vite": "5.0.0-beta.1"
   },
 
 }
