@@ -1,0 +1,63 @@
+{
+  "name": "@myorg/awesome-package",
+  "version": "2.1.0-rc.3",
+  "description": "A sample package demonstrating pre-release version suffixes",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "publish:snapshot": "npm version 2.1.0-snapshot.$(date +%Y%m%d%H%M%S) && npm publish --tag snapshot",
+    "publish:nightly": "npm version 2.1.0-nightly.$(date +%Y%m%d) && npm publish --tag nightly",
+    "publish:canary": "npm version 2.1.0-canary.1 && npm publish --tag canary",
+    "publish:alpha": "npm version 2.1.0-alpha.1 && npm publish --tag alpha",
+    "publish:beta": "npm version 2.1.0-beta.1 && npm publish --tag beta",
+    "publish:rc": "npm version 2.1.0-rc.1 && npm publish --tag rc",
+    "publish:preview": "npm version 2.1.0-preview.1 && npm publish --tag preview"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0",
+    "react": ">=16.8.0",
+    "express": "2.1.0-snapshot.20241201123045",
+    "webpack": "5.88.0-nightly.20241201",
+    "babel-core": "7.22.0-canary.1",
+    "eslint": "8.45.0-alpha.2",
+    "prettier": "3.0.0-beta.3",
+    "vite": "4.4.0-dev.1",
+    "rollup": "3.26.0-pre.2",
+    "next": "13.4.0-rc.4",
+    "gatsby": "5.11.0-preview.1",
+    "nuxt": "3.6.0-ea.5",
+    "vue": "3.3.0-eap.2",
+    "angular": "16.1.0-milestone.1",
+    "svelte": "4.1.0-next.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "prerelease",
+    "versioning",
+    "npm",
+    "semver"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/awesome-package.git"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ]
+}
