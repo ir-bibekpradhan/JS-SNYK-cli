@@ -1,11 +1,4 @@
-"devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
-    "jest": "^29.0.0"
-  },
-  "peerDependencies": {
-    "react": ">=16.8.0"
-  },{
+{
   "name": "@myorg/awesome-package",
   "version": "2.1.0-rc.3",
   "description": "A sample package demonstrating pre-release version suffixes",
@@ -23,10 +16,7 @@
     "publish:preview": "npm version 2.1.0-preview.1 && npm publish --tag preview"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
-    "jest": "^29.0.0"
+    "lodash": "^4.17.21"
   },
   "publishConfig": {
     "access": "public",
