@@ -25,7 +25,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: ${{ secrets.VB_API_KEY_STAGE }}
+          app_token: ${{ secrets.IR_API_KEY }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -35,21 +35,35 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-      - name: Export Dependency Tree to JSON
-        run: npm list --all --json > dependencies.json
+      # - name: Export Dependency Tree to JSON
+      #   run: npm list --all --json > dependencies.json
 
-      - name: Convert JSON to CSV
-        run: |
-          node .github/scripts/deps-to-csv.js
+      # - name: Convert JSON to CSV
+      #   run: |
+      #     node .github/scripts/deps-to-csv.js
 
-      - name: Upload CSV Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: npm-dependencies-csv
-          path: dependencies.csv
+      # - name: Upload CSV Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: npm-dependencies-csv
+      #     path: dependencies.csv
 
       - name: Cleanup PSE
         if: always()
         uses: invisirisk/pse-action@latest
         with:
           cleanup: "true"
+
+  gather_analytics:
+    runs-on: ubuntu-latest
+    name: Gather Analytics
+    needs: sync-and-build
+    if: always()
+    steps:
+    - name: Gather Status
+      uses: invisirisk/pse-action@latest
+      with:
+       api_url: "https://app.stage.invisirisk.com"
+       app_token: ${{ secrets.IR_API_KEY }}
+       send_job_status: "true"
+       debug: "true"
