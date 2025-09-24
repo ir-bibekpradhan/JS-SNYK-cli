@@ -1,20 +1,24 @@
 {
-  "name": "pre-release-test",
+  "name": "pre-release-fixed",
   "version": "1.0.0",
-  "description": "A test project using packages with pre-release versions",
+  "description": "Project pinned to specific pre‑release versions",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "react": "^18.3.0-alpha-0",
-    "webpack": "^6.0.0-beta.19",
-    "next": "14.0.0-canary.22",
-    "typescript": "5.3.0-dev.20230904",
-    "eslint": "9.0.0-preview",
-    "jest": "29.7.0-next.0",
-    "@babel/core": "7.23.0-rc.1",
-    "vue": "3.4.0-rc.2",
-    "vite": "5.0.0-beta.1"
+    "react": "18.0.0-alpha-255221c86-20211103",     
+    "webpack": "2.1.0-beta.25",                        
+    "next": "14.0.0-canary.22",                         // you’ll need to find an existing next canary
+    "typescript": "5.3.0-dev.20230904",                // example dev tag (you must confirm existence)
+    "eslint": "9.0.0-preview.0",                        // “preview” tag version (if exists)
+    "jest": "29.7.0-next.0",                            // “next” tag example (if exists)
+    "vue": "3.4.0-rc.2",                                /
+    "vite": "5.0.0-beta.1"                             
+  },
+  "devDependencies": {
+    // You can also pin devDependencies similarly
+    "webpack-cli": "5.0.0-beta.0",
+    "babel-eslint": "10.0.0-alpha.1"
   }
 }
