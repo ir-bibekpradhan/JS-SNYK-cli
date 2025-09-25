@@ -1,0 +1,105 @@
+{
+  "name": "snyk",
+  "version": "1.0.0-monorepo",
+  "description": "snyk library and cli utility",
+  "files": [
+    "help/cli-commands",
+    "dist",
+    "bin",
+    "pysrc",
+    "config.default.json",
+    "SECURITY.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "directories": {
+    "lib": "src",
+    "test": "test",
+    "doc": "help/cli-commands"
+  },
+  "bin": {
+    "snyk": "bin/snyk"
+  },
+  "engines": {
+    "node": "^18"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "npx rimraf node_modules dist binary-releases test-results *.tgz tsconfig.tsbuildinfo .eslintcache pysrc packages/*/node_modules packages/*/dist packages/*/tsconfig.tsbuildinfo packages/*/*.tgz",
+    "format": "prettier --write '**/*.{js,ts,json,yaml,yml,md}' && npm run lint:js -- --fix",
+    "format:changes": "./scripts/format/prettier-changes.sh",
+    "lint": "npm-run-all --serial --continue-on-error lint:*",
+    "lint:js": "eslint --quiet --color --cache '**/*.{js,ts}'",
+    "lint:formatting": "prettier --check '**/*.{js,ts,json,yaml,yml,md}'",
+    "build": "patch-package && npm run build:dev",
+    "build:dev": "patch-package && npm run build --workspaces && npm run build-cli:dev",
+    "build:prod": "patch-package && npm run build --workspaces && npm run build-cli:prod",
+    "build-cli:dev": "node --max-old-space-size=8192 node_modules/webpack/bin/webpack.js --config webpack.dev.ts",
+    "build-cli:prod": "node --max-old-space-size=8192 node_modules/webpack/bin/webpack.js --config webpack.prod.ts",
+    "watch": "npm run build-cli:dev -- --watch",
+    "test": "npm run test:unit && npm run test:acceptance && npm run test:tap",
+    "test:unit": "jest --runInBand --testPathPattern '/test(/jest)?/unit/' --reporters=jest-junit",
+    "test:acceptance": "jest --maxWorkers=1 --testPathPattern \"/test(/jest)?/acceptance/\" --reporters=jest-junit",
+    "test:tap": "tap -Rspec --timeout=300 test/tap/*.test.* ",
+    "test:smoke": "./scripts/run-smoke-tests-locally.sh",
+    "dev": "ts-node ./src/cli/index.ts",
+    "publish:snapshot": "npm version 1.0.0-snapshot.$(date +%Y%m%d%H%M%S) && npm publish --tag snapshot",
+    "publish:nightly": "npm version 1.0.0-nightly.$(date +%Y%m%d) && npm publish --tag nightly",
+    "publish:canary": "npm version 1.0.0-canary.1 && npm publish --tag canary",
+    "publish:alpha": "npm version 1.0.0-alpha.1 && npm publish --tag alpha",
+    "publish:beta": "npm version 1.0.0-beta.1 && npm publish --tag beta",
+    "publish:rc": "npm version 1.0.0-rc.1 && npm publish --tag rc",
+    "publish:preview": "npm version 1.0.0-preview.1 && npm publish --tag preview"
+  },
+  "keywords": [
+    "security",
+    "vulnerabilities",
+    "advisories",
+    "audit",
+    "snyk",
+    "scan",
+    "docker",
+    "container",
+    "scanning"
+  ],
+  "author": "snyk.io",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "react": "18.3.0-canary-16d053d59-20230506",
+    "next": "15.0.0-canary.123",
+    "typescript": "5.6.0-beta",
+    "webpack": "5.95.0",
+    "vite": "6.0.0-beta.5",
+    "eslint": "9.0.0-alpha.2",
+    "prettier": "3.4.0-beta.1",
+    "vue": "3.5.0-alpha.5",
+    "express": "5.0.0-beta.3",
+    "jest": "30.0.0-alpha.6",
+    "rollup": "4.25.0-alpha.1",
+    "lodash": "4.17.21"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snyk/snyk.git"
+  },
+  "pkg": {
+    "scripts": [
+      "dist/**/*.js",
+      "bin/snyk"
+    ],
+    "assets": [
+      "config.default.json",
+      "dist",
+      "help"
+    ]
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "jest-junit": {
+    "reportTestSuiteErrors": "true"
+  }
+}
