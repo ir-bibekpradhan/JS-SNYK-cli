@@ -67,18 +67,15 @@
   "author": "snyk.io",
   "license": "Apache-2.0",
   "dependencies": {
-    "react": "18.3.0-canary-16d053d59-20230506",
-    "next": "15.0.0-canary.123",
-    "typescript": "5.6.0-beta",
-    "webpack": "5.95.0",
-    "vite": "6.0.0-beta.5",
-    "eslint": "9.0.0-alpha.2",
-    "prettier": "3.4.0-beta.1",
-    "vue": "3.5.0-alpha.5",
-    "express": "5.0.0-beta.3",
-    "jest": "30.0.0-alpha.6",
-    "rollup": "4.25.0-alpha.1",
-    "lodash": "4.17.21"
+    "react": "0.0.0-experimental-e2332183-20250924",
+    "next": "15.6.0-canary.29",
+    "vite": "3.0.0-alpha.0",
+    "eslint": "9.0.0-beta.2",
+    "prettier": "3.0.0-alpha.8-for-vscode",
+    "vue": "1.0.28-csp",
+    "express": "5.0.0-alpha.6",
+    "jest": "30.0.0-beta.2",
+    "lodash": "0.5.0-rc.1"
   },
   "repository": {
     "type": "git",
