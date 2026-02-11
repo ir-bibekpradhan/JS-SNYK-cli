@@ -22,15 +22,22 @@ jobs:
           fetch-depth: 0
           
       - name: Setup PSE
-        uses: invisirisk/pse-action@dev-test
+        uses: invisirisk/pse-action@develop
         with:
-          api_url: "https://app.invisirisk.com"
+          api_url: "https://app.stage.invisirisk.com"
           app_token: ${{ secrets.IR_API_KEY }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Cache NPM modules
+        uses: actions/cache@v3
+        with:
+           path: ~/.npm
+           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+           restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -50,7 +57,7 @@ jobs:
 
       - name: Cleanup PSE
         if: always()
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
           cleanup: "true"
 
@@ -61,9 +68,9 @@ jobs:
     if: always()
     steps:
     - name: Gather Status
-      uses: invisirisk/pse-action@dev-test
+      uses: invisirisk/pse-action@develop
       with:
-       api_url: "https://app.invisirisk.com"
+       api_url: "https://app.dev.invisirisk.com"
        app_token: ${{ secrets.IR_API_KEY }}
        send_job_status: "true"
        debug: "true"
