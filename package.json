@@ -1,6 +1,7 @@
 {
   "name": "snyk",
   "version": "1.0.0-monorepo",
+  "private": true,
   "description": "snyk library and cli utility",
   "files": [
     "help/cli-commands",
