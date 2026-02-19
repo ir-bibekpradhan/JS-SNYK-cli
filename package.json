@@ -22,7 +22,7 @@
     "snyk": "bin/snyk"
   },
   "engines": {
-    "node": "^18"
+    "node": ">=02.9.0"
   },
   "workspaces": [
     "packages/*"
