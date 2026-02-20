@@ -1,4 +1,4 @@
-name: SNYK x InvisiRisk 
+name: SNYK x InvisiRisk
 
 on:
   workflow_dispatch:
@@ -20,47 +20,25 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-          
-      - name: Setup PSE
-        uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.invisirisk.com"
-          app_token: ${{ secrets.IR_API_KEY }}
-          mode: "docker-intercept"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Cache NPM modules
         uses: actions/cache@v3
         with:
-           path: ~/.npm
-           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-           restore-keys: |
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-        
-      # - name: Export Dependency Tree to JSON
-      #   run: npm list --all --json > dependencies.json
 
-      # - name: Convert JSON to CSV
-      #   run: |
-      #     node .github/scripts/deps-to-csv.js
-
-      # - name: Upload CSV Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: npm-dependencies-csv
-      #     path: dependencies.csv
-
-      - name: Cleanup PSE
-        if: always()
-        uses: invisirisk/pse-action@latest
-        with:
-          cleanup: "true"
+      - name: Build Docker Image
+        run: docker build -t my-app:latest .
 
   gather_analytics:
     runs-on: ubuntu-latest
@@ -68,10 +46,10 @@ jobs:
     needs: sync-and-build
     if: always()
     steps:
-    - name: Gather Status
-      uses: invisirisk/pse-action@latest
-      with:
-       api_url: "https://app.invisirisk.com"
-       app_token: ${{ secrets.IR_API_KEY }}
-       send_job_status: "true"
-       debug: "true"
+      - name: Gather Status
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+          send_job_status: "true"
+          debug: "true"
