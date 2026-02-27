@@ -16,11 +16,11 @@ jobs:
 
     steps:
       # ============= InvisiRisk Setup =============
-      - name: Setup PSE
-        uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: ${{secrets.IR_API_KEY}}
+      # - name: Setup PSE
+      #   uses: invisirisk/pse-action@latest
+      #   with:
+      #     api_url: "https://app.stage.invisirisk.com"
+      #     app_token: ${{secrets.IR_API_KEY}}
       # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,10 +47,10 @@ jobs:
       - name: Build Docker Image
         run: docker build -t my-app:latest .
       # ============= InvisiRisk Cleanup =============
-      - name: Cleanup PSE
-        if: always()
-        uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.stage.invisirisk.com"         
-          cleanup: "true"
+      # - name: Cleanup PSE
+      #   if: always()
+      #   uses: invisirisk/pse-action@latest
+      #   with:
+      #     api_url: "https://app.stage.invisirisk.com"         
+      #     cleanup: "true"
       # ============= InvisiRisk Cleanup End =============
