@@ -43,9 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-
-      - name: Build Docker Image
-        run: docker build -t my-app:latest .
+        
       # ============= InvisiRisk Cleanup =============
       # - name: Cleanup PSE
       #   if: always()
