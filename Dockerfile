@@ -10,9 +10,6 @@ RUN npm install --legacy-peer-deps
 # Copy source and build
 COPY . .
 
-# If your app has a build step (React/Next/Nest/etc.)
-RUN npm run build
-
 
 # -------- Stage 2: Production --------
 FROM node:20-alpine AS runner
