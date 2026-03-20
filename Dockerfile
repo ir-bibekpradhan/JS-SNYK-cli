@@ -21,7 +21,6 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
 # If you have a build output (uncomment one depending on your app)
-COPY --from=builder /app/dist ./dist
 # COPY --from=builder /app/build ./build
 
 # Expose port
