@@ -1,20 +1,34 @@
-# Base image
-FROM node:20-alpine
+# -------- Stage 1: Build --------
+FROM node:20-alpine AS builder
 
-# App directory
 WORKDIR /app
 
-# Copy dependency files first
+# Install dependencies first (better caching)
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install --legacy-peer-deps
 
-# Copy project files
+# Copy source and build
 COPY . .
 
-# Expose port (change if your app uses another)
+# If your app has a build step (React/Next/Nest/etc.)
+RUN npm run build
+
+
+# -------- Stage 2: Production --------
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Copy only necessary files from builder
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+
+# If you have a build output (uncomment one depending on your app)
+COPY --from=builder /app/dist ./dist
+# COPY --from=builder /app/build ./build
+
+# Expose port
 EXPOSE 3000
 
-# Start command
-CMD ["npm", "start"]
+# Start app (adjust if needed)
+CMD ["node", "dist/index.js"]
