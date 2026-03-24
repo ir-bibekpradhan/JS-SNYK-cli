@@ -1,26 +1,19 @@
-name: SNYK Xx InvisiRisk 
+name: Uncached Install xxIR
 
 on:
   workflow_dispatch:
 
-permissions:
-  checks: write
-  contents: write
-  packages: read
-  actions: write
-
 jobs:
-  sync-and-build:
+  uncached:
     runs-on: ubuntu-latest
-    name: Sync fork and Run build
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          persist-credentials: false
-          fetch-depth: 0
-          
+          node-version: 20
+
       - name: Setup PSE
         uses: invisirisk/pse-action@latest
         with:
@@ -28,34 +21,20 @@ jobs:
           app_token: ${{ secrets.IR_API_KEY }}
           mode: "docker-intercept"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Enable Corepack (Yarn)
-        run: corepack enable
-
-      - name: Install dependencies (fresh)
+      # 🔥 REMOVE EVERYTHING
+      - name: Clean all caches
         run: |
           rm -rf node_modules
-          yarn install --no-cache
+          rm -f package-lock.json yarn.lock
+          npm cache clean --force
+          yarn cache clean || true
+
+      # 🔥 Fresh install
+      - name: Install fresh
+        run: npm install
+
       - name: Cleanup PSE
         if: always()
         uses: invisirisk/pse-action@latest
         with:
           cleanup: "true"
-
-  gather_analytics:
-    runs-on: ubuntu-latest
-    name: Gather Analytics
-    needs: sync-and-build
-    if: always()
-    steps:
-      - name: Gather Status
-        uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: ${{ secrets.IR_API_KEY }}
-          send_job_status: "true"
-          debug: "true"
