@@ -40,10 +40,22 @@ jobs:
         run: |
           rm -rf node_modules
           yarn install --no-cache
-
       - name: Cleanup PSE
         if: always()
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
           cleanup: "true"
+
+  gather_analytics:
+    runs-on: ubuntu-latest
+    name: Gather Analytics
+    needs: sync-and-build
+    if: always()
+    steps:
+      - name: Gather Status
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+          send_job_status: "true"
+          debug: "true"
