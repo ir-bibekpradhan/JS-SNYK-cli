@@ -33,17 +33,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Enable Corepack (Yarn)
-        run: corepack enable
-
-      - name: Clear all caches
-        run: |
-          rm -rf node_modules package-lock.json yarn.lock
-          yarn cache clean --all
-          npm cache clean --force
-
       - name: Install dependencies (fully uncached)
-        run: yarn install --no-cache
+        run: npm install --legacy-peer-deps
 
       - name: Cleanup PSE
         if: always()
