@@ -1,4 +1,4 @@
-name: SNYK xxxx InvisiRisk
+name: SNYK x InvisiRisk
 on:
   workflow_dispatch:
 permissions:
@@ -11,11 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Sync fork and Run build
     steps:
-        # ============= InvisiRisk Setup =============
+      # ============= InvisiRisk Setup =============
       - name: Setup PSE
-        uses: invisirisk/pse-action@develop
+        uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.dev.invisirisk.com"
           app_token: ${{secrets.IR_API_KEY}}
           mode: docker-intercept
       # ============= InvisiRisk Setup End =============
@@ -24,14 +23,23 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Cache NPM modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Build Docker Image
-        run: docker build -t my-app:latest --build-arg BUILDKIT_SYNTAX=public.ecr.aws/w3c0c0n7/invisirisk/baf-buildkit:dev-test --secret id=pse-ca,src=/etc/ssl/certs/pse.pem --build-arg PSE_PROXY=http://${PSE_PROXY_IP}:3128 .
-
- 
-          # ============= InvisiRisk Cleanup =============
+        run: docker build -t my-app:latest --build-arg BUILDKIT_SYNTAX=public.ecr.aws/w3c0c0n7/invisirisk/baf-buildkit:latest --secret id=pse-ca,src=/etc/ssl/certs/pse.pem --build-arg PSE_PROXY=http://${PSE_PROXY_IP}:3128 .
+      # ============= InvisiRisk Cleanup =============
       - name: Cleanup PSE
         if: always()
-        uses: invisirisk/pse-action@develop
+        uses: invisirisk/pse-action@latest
         with:
           cleanup: "true"
       # ============= InvisiRisk Cleanup End =============
