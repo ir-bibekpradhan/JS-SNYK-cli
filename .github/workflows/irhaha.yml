@@ -1,4 +1,4 @@
-name: SNYK x InvisiRisk
+name: SNYK xasd InvisiRisk
 on:
   workflow_dispatch:
 permissions:
