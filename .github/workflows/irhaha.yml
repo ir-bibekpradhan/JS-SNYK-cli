@@ -16,6 +16,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           app_token: ${{secrets.IR_API_KEY}}
+          mode: docker-intercept  
       # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
