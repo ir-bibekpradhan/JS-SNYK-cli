@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
  
 permissions:
-  checks: write
-  contents: write
-  packages: write
-  actions: write
+  checks: read
+  contents: read
+  packages: read
+  actions: read
  
 jobs:
   sync-and-build:
@@ -21,7 +21,6 @@ jobs:
         with:
           api_url: "https://app.stage.invisirisk.com"
           app_token: ${{secrets.IR_API_KEY}}
-          collect_dependencies: false
       # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
