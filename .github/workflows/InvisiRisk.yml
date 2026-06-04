@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
  
 permissions:
-  checks: read
+  checks: write
   contents: read
   packages: read
   actions: read
