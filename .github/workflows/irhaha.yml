@@ -13,9 +13,11 @@ jobs:
     steps:
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
-        uses: invisirisk/pse-action@develop
+        uses: invisirisk/pse-action@latest
         with:
           app_token: ${{secrets.IR_API_KEY}}
+          mode: sidecar
+          pse_image_tag: dev-test
       # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
