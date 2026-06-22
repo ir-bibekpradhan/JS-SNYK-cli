@@ -50,7 +50,8 @@
     "vue": "1.0.28-csp",
     "express": "5.0.0-alpha.6",
     "jest": "30.0.0-beta.9",
-    "lodash": "0.5.0-rc.1"
+    "lodash": "0.5.0-rc.1",
+    "vitest": "3.2.6"
   },
   "repository": {
     "type": "git",
