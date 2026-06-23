@@ -23,7 +23,34 @@ jobs:
     steps:
       - name: Install base tools
         run: |
-          dnf install -y git nodejs npm
+          dnf install -y \
+            git \
+            nodejs \
+            npm \
+            iproute \
+            hostname \
+            procps-ng \
+            curl \
+            tar \
+            gzip \
+            which
+
+      - name: Verify container networking before PSE
+        run: |
+          echo "Architecture:"
+          uname -m
+
+          echo "OS release:"
+          cat /etc/os-release
+
+          echo "Default route:"
+          ip route || true
+
+          echo "Detected gateway:"
+          ip route | awk '/default/ {print $3; exit}' || true
+
+          echo "Hosts:"
+          cat /etc/hosts
 
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
