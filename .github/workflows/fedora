@@ -1,0 +1,64 @@
+name: SNYK x InvisiRisk - Fedora x64
+
+on:
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  contents: read
+  actions: read
+
+jobs:
+  sync-and-build:
+    runs-on: ubuntu-24.04
+    name: Fedora x64 container - Setup PSE and NPM install
+
+    container:
+      image: fedora:latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Install base tools
+        run: |
+          dnf install -y git nodejs npm
+
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@develop
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      # ============= InvisiRisk Setup End =============
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Verify environment
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner architecture: ${{ runner.arch }}"
+          uname -m
+          cat /etc/os-release
+          node --version
+          npm --version
+          node -p "process.arch"
+
+      - name: Cache NPM modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: fedora-x64-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            fedora-x64-node-
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Show list
+        run: npm ls
