@@ -24,6 +24,7 @@ jobs:
       - name: Install base tools
         run: |
           dnf install -y \
+            ca-certificates \
             git \
             nodejs \
             npm \
@@ -35,7 +36,9 @@ jobs:
             gzip \
             which
 
-      - name: Verify container networking before PSE
+          update-ca-trust
+
+      - name: Verify container networking and certs before PSE
         run: |
           echo "Architecture:"
           uname -m
@@ -46,11 +49,11 @@ jobs:
           echo "Default route:"
           ip route || true
 
-          echo "Detected gateway:"
-          ip route | awk '/default/ {print $3; exit}' || true
+          echo "CA bundle:"
+          ls -l /etc/pki/tls/certs/ca-bundle.crt || true
 
-          echo "Hosts:"
-          cat /etc/hosts
+          echo "Git:"
+          git --version
 
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
