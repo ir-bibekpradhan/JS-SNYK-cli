@@ -1,0 +1,58 @@
+name: SNYK x InvisiRisk - Ubuntu ARM64
+
+on:
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  contents: read
+  actions: read
+
+jobs:
+  sync-and-build:
+    runs-on: ubuntu-24.04-arm
+    name: Ubuntu ARM64 - Setup PSE and NPM install
+
+    steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@develop
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      # ============= InvisiRisk Setup End =============
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify environment
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner architecture: ${{ runner.arch }}"
+          uname -m
+          cat /etc/os-release
+          node --version
+          npm --version
+          node -p "process.arch"
+
+      - name: Cache NPM modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ubuntu-arm64-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ubuntu-arm64-node-
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Show list
+        run: npm ls
