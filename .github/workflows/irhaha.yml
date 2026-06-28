@@ -1,32 +1,40 @@
 name: SNYK xasd InvisiRisk
+
 on:
   workflow_dispatch:
+
 permissions:
   checks: write
   contents: write
   packages: read
   actions: write
+
 jobs:
   sync-and-build:
     runs-on: ubuntu-latest
     name: Sync fork and Run build
+
     steps:
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: ${{secrets.IR_API_KEY}}
+          app_token: ${{ secrets.IR_API_KEY }}
       # ============= InvisiRisk Setup End =============
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
+
+      # Node setup is optional now because npm install runs inside Dockerfile.
+      # Keeping it is harmless, but Dockerfile is the actual test environment.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
+
       - name: Cache NPM modules
         uses: actions/cache@v3
         with:
@@ -34,5 +42,29 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: Build Docker Image
-        run: docker build -t my-app:latest --build-arg BUILDKIT_SYNTAX=public.ecr.aws/w3c0c0n7/invisirisk/baf-buildkit:latest --secret id=pse-ca,src=/etc/ssl/certs/pse.pem --build-arg PSE_PROXY=http://${PSE_PROXY_IP}:3128 .
+        run: |
+          docker build --no-cache \
+            -t my-app:latest \
+            --build-arg BUILDKIT_SYNTAX=public.ecr.aws/w3c0c0n7/invisirisk/baf-buildkit:latest \
+            --secret id=pse-ca,src=${PSE_CA_CERT_PATH} \
+            --build-arg PSE_PROXY=http://${PSE_PROXY_IP}:3128 \
+            .
+
+      # Extract archive.zip from the Docker image back to the GitHub runner.
+      # This is needed only because actions/upload-artifact cannot run inside Dockerfile.
+      - name: Extract archive from Docker image
+        run: |
+          container_id=$(docker create my-app:latest)
+          docker cp "$container_id:/app/archive.zip" ./archive.zip
+          docker rm "$container_id"
+          ls -lh archive.zip
+
+      # This cannot run inside Dockerfile. It must stay in GitHub Actions YAML.
+      - name: Upload archive artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: archive
+          path: archive.zip
+          if-no-files-found: error
