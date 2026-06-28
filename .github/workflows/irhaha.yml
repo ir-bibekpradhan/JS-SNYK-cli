@@ -20,6 +20,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           app_token: ${{ secrets.IR_API_KEY }}
+          debug: true
       # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
