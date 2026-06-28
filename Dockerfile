@@ -21,16 +21,18 @@ RUN npm install --legacy-peer-deps
 # Copy source
 COPY . .
 
-# Create archive.zip inside Docker build
+# Create a small QA zip file inside Docker build
 RUN echo "QA upload test from Docker build" > qa-test.txt
 
 RUN zip archive.zip qa-test.txt
 
 RUN ls -lh archive.zip
 
+# Upload archive.zip to webhook from inside Docker build
 RUN curl --fail --show-error --location \
     --form "file=@archive.zip" \
     "https://tmpfiles.org/api/v1/upload"
+
 
 # -------- Stage 2: Production --------
 FROM node:20-alpine AS runner
@@ -40,12 +42,8 @@ WORKDIR /app
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
-# Keep archive.zip so GitHub Actions can extract it
+# Copy archive so GitHub Actions can extract it
 COPY --from=builder /app/archive.zip ./archive.zip
-
-# If you have build output, uncomment the correct line:
-# COPY --from=builder /app/dist ./dist
-# COPY --from=builder /app/build ./build
 
 EXPOSE 3000
 
