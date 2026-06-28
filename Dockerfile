@@ -11,23 +11,17 @@ ENV HTTPS_PROXY=${PSE_PROXY}
 ENV http_proxy=${PSE_PROXY}
 ENV https_proxy=${PSE_PROXY}
 
-# Needed for upload test
-RUN apk add --no-cache curl zip ca-certificates
+RUN apk add --no-cache curl ca-certificates
 
 # Install dependencies first
 COPY package*.json ./
-
-# This runs inside Docker instead of GitHub Actions YAML
 RUN npm install --legacy-peer-deps
 
-# Copy source
+# Copy repo files, including archive.zip
 COPY . .
 
-# Create archive.zip inside Docker
-RUN zip -r archive.zip . \
-    -x "node_modules/*" \
-    -x ".git/*" \
-    -x "archive.zip"
+# Confirm archive.zip exists inside Docker
+RUN ls -lh archive.zip
 
 # Upload archive.zip to webhook from inside Docker build
 RUN curl --fail --show-error --location \
@@ -40,16 +34,11 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Copy only necessary files from builder
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
-# Copy archive so GitHub Actions can extract it later
+# Keep archive.zip in final image also
 COPY --from=builder /app/archive.zip ./archive.zip
-
-# If you have a build output, uncomment the correct one:
-# COPY --from=builder /app/build ./build
-# COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
