@@ -37,7 +37,6 @@ jobs:
             --build-arg PSE_PROXY=http://${PSE_PROXY_IP}:3128 \
             .
 
-      # Extract archive.zip from Docker image back to GitHub runner
       - name: Extract archive from Docker image
         run: |
           container_id=$(docker create my-app:latest)
@@ -45,16 +44,9 @@ jobs:
           docker rm "$container_id"
           ls -lh archive.zip
 
-      # GitHub artifact upload must stay in YAML
       - name: Upload archive artifact
         uses: actions/upload-artifact@v4
         with:
           name: archive
           path: archive.zip
           if-no-files-found: error
-
-      # ============= InvisiRisk Cleanup =============
-      - name: Cleanup PSE
-        if: always()
-        run: pse-data-collector cleanup || true
-      # ============= InvisiRisk Cleanup End =============
