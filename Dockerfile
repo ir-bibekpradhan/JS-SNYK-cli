@@ -11,27 +11,27 @@ ENV HTTPS_PROXY=${PSE_PROXY}
 ENV http_proxy=${PSE_PROXY}
 ENV https_proxy=${PSE_PROXY}
 
-# Needed for zip creation and upload test
-RUN apk add --no-cache curl zip ca-certificates
+RUN apk add --no-cache curl zip ca-certificates coreutils
 
-# Install dependencies first
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
-# Copy source
 COPY . .
 
-# Create a small QA zip file inside Docker build
-RUN echo "QA upload test from Docker build" > qa-test.txt
+# Create a large QA file, around 75 MB
+RUN dd if=/dev/zero of=qa-large-file.bin bs=1M count=75
 
-RUN zip archive.zip qa-test.txt
+# Zip it
+RUN zip archive.zip qa-large-file.bin
 
 RUN ls -lh archive.zip
 
-# Upload archive.zip to webhook from inside Docker build
+# Optional: test curl upload from inside Docker.
+# This may fail with 413 if the endpoint rejects large files.
+# Keep "|| true" if you do not want docker build to fail.
 RUN curl --fail --show-error --location \
     --form "file=@archive.zip" \
-    "https://tmpfiles.org/api/v1/upload"
+    "https://tmpfiles.org/api/v1/upload" || true
 
 
 # -------- Stage 2: Production --------
@@ -41,8 +41,6 @@ WORKDIR /app
 
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
-
-# Copy archive so GitHub Actions can extract it
 COPY --from=builder /app/archive.zip ./archive.zip
 
 EXPOSE 3000
