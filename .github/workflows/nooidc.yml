@@ -1,8 +1,12 @@
-name: SNYK jkkuyx InvisiRisk
+name: SNYK x InvisiRisk
  
 on:
   workflow_dispatch:
-
+ 
+permissions:
+  checks: write
+  contents: read
+  actions: read
  
 jobs:
   sync-and-build:
@@ -10,7 +14,13 @@ jobs:
     name: Sync fork and Run build
  
     steps:
-
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com" 
+          app_token: ${{secrets.IR_API_KEY}}
+      # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
