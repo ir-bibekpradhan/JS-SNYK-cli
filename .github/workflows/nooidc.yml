@@ -7,7 +7,7 @@ permissions:
   checks: write
   contents: read
   actions: read
-  id-token: write
+  id-token: read
  
 jobs:
   sync-and-build:
