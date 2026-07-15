@@ -7,6 +7,7 @@ permissions:
   checks: write
   contents: read
   actions: read
+  id-token: write
 
 jobs:
   sync-and-build:
@@ -14,6 +15,12 @@ jobs:
     name: Ubuntu ARM64 - Setup PSE and NPM install
 
     steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@develop
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+      # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
         uses: actions/checkout@v4
