@@ -7,6 +7,7 @@ permissions:
   checks: write
   contents: read
   actions: read
+  id-token: write
 jobs:
   sync-and-build:
     runs-on: ubuntu-24.04-arm
@@ -15,9 +16,7 @@ jobs:
     steps:
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
-        uses: invisirisk/pse-action@develop
-        with:
-          api_url: "https://app.stage.invisirisk.com"
+        uses: invisirisk/pse-action@latest
       # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
