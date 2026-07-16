@@ -19,6 +19,7 @@ jobs:
         uses: invisirisk/pse-action@develop
         with:
           api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{secrets.IR_TOKEN}}
       # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
