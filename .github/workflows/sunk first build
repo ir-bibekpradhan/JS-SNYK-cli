@@ -1,4 +1,5 @@
-name: SNYK first build
+```yaml
+name: SNYK First Build
 
 on:
   workflow_dispatch:
@@ -8,17 +9,18 @@ permissions:
   contents: read
   actions: read
   id-token: write
+
 jobs:
   sync-and-build:
     runs-on: ubuntu-24.04-arm
-    name: Ubuntu ARM64 - Setup PSE and NPM install
+    name: Ubuntu ARM64 - Successful Build
 
     steps:
-     # ============= InvisiRisk Setup =============
+      # ============= InvisiRisk Setup =============
       - name: Setup PSE
         uses: invisirisk/pse-action@develop
         with:
-           api_url: "https://app.stage.invisirisk.com"
+          api_url: "https://app.stage.invisirisk.com"
       # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
@@ -30,7 +32,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Verify environment
         run: |
@@ -53,19 +55,19 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Show list
+      - name: Show dependency list
         run: npm ls
 
- Fail this:
+  fail-this:
     runs-on: ubuntu-24.04-arm
-    name: Ubuntu ARM64 - Setup PSE and NPM install
+    name: Ubuntu ARM64 - Failed Job
 
     steps:
-     # ============= InvisiRisk Setup =============
+      # ============= InvisiRisk Setup =============
       - name: Setup PSE
         uses: invisirisk/pse-action@develop
         with:
-           api_url: "https://app.stage.invisirisk.com"
+          api_url: "https://app.stage.invisirisk.com"
       # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
@@ -74,9 +76,36 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-      - name: Install dependencies
-        run: npm
+      - name: Intentionally fail
+        run: |
+          echo "This job is failing intentionally."
+          exit 1
 
-      - name: Show list
-        run: npm ls
+  stall-this:
+    runs-on: ubuntu-24.04-arm
+    name: Ubuntu ARM64 - Stalled Job
+    timeout-minutes: 10
+
+    steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@develop
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+      # ============= InvisiRisk Setup End =============
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Stall indefinitely
+        run: |
+          echo "This job will remain running until the timeout is reached."
+          sleep infinity
