@@ -16,7 +16,10 @@ jobs:
     name: Sync fork and Run build
 
     steps:
-
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+      # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,7 +29,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build --no-cache .
+          docker build --no-cache --build-arg BUILDKIT_SYNTAX=public.ecr.aws/w3c0c0n7/invisirisk/baf-buildkit:latest --secret id=pse-ca,src=${PSE_CA_CERT_PATH} --build-arg PSE_PROXY=http://${PSE_PROXY_IP}:3128 .
 
       - name: Extract archive from Docker image
         run: |
