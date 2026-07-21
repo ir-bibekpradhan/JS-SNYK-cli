@@ -14,6 +14,10 @@ jobs:
     name: Sync fork and Run build
 
     steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+      # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
         uses: actions/checkout@v4
