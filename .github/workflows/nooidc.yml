@@ -3,21 +3,13 @@ name: SNYK xxxxxxxxxx InvisiRisk
 on:
   workflow_dispatch:
 
-permissions:
-  checks: write
-  contents: read
-  actions: read
-  id-token: write
 jobs:
   sync-and-build:
     runs-on: ubuntu-latest
     name: Sync fork and Run build
 
     steps:
-      # ============= InvisiRisk Setup =============
-      - name: Setup PSE
-        uses: invisirisk/pse-action@latest
-      # ============= InvisiRisk Setup End =============
+
 
       - name: Checkout repository
         uses: actions/checkout@v4
