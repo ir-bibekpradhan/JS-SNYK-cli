@@ -20,7 +20,7 @@ jobs:
       - name: Setup PSE
         uses: invisirisk/pse-action@latest
         with:
-          app_token: ${{secrets.IR_TOKEN}}
+          app_token: ${{secrets.IR_API_KEY}}
       # ============= InvisiRisk Setup End =============
 
       - name: Checkout repository
