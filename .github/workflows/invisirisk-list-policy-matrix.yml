@@ -1,0 +1,127 @@
+name: InvisiRisk List Policy Runtime Matrix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  checks: write
+  contents: read
+
+env:
+  IR_STAGE_URL: https://app.stage.invisirisk.com
+
+jobs:
+  unlisted-control:
+    name: "CONTROL - unlisted URL, host, and MIME (expect default Allow)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: ${{ env.IR_STAGE_URL }}
+          app_token: ${{ secrets.IR_API_KEY }}
+
+      - name: Request an unlisted value
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://httpbin.org/response-headers?Content-Type=application%2Fx-invisirisk-qa-unlisted'
+          echo "Scenario: no configured list should match"
+          echo "URL: ${url}"
+          curl --fail-with-body --silent --show-error \
+            --dump-header control-headers.txt \
+            --output control-body.txt \
+            "${url}"
+          sed -n '1,20p' control-headers.txt
+
+  listed-url:
+    name: "MATCH - URL https://example.com (expect Warn)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: ${{ env.IR_STAGE_URL }}
+          app_token: ${{ secrets.IR_API_KEY }}
+
+      - name: Request the URL stored in valid_url
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://example.com'
+          echo "Scenario: URL is present in list valid_url"
+          echo "URL: ${url}"
+          curl --fail-with-body --silent --show-error \
+            --dump-header listed-url-headers.txt \
+            --output listed-url-body.txt \
+            "${url}"
+          sed -n '1,20p' listed-url-headers.txt
+
+  listed-host:
+    name: "MATCH - host github.com (expect Warn)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: ${{ env.IR_STAGE_URL }}
+          app_token: ${{ secrets.IR_API_KEY }}
+
+      - name: Request a path on the host stored in valid_hosts
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://github.com/robots.txt'
+          echo "Scenario: Host github.com is present in list valid_hosts"
+          echo "URL: ${url}"
+          curl --fail-with-body --silent --show-error \
+            --dump-header listed-host-headers.txt \
+            --output listed-host-body.txt \
+            "${url}"
+          sed -n '1,20p' listed-host-headers.txt
+
+  listed-mime-type:
+    name: "MATCH - MIME application/json (expect Warn)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: ${{ env.IR_STAGE_URL }}
+          app_token: ${{ secrets.IR_API_KEY }}
+
+      - name: Request content with a MIME type stored in valid_mime_type
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://httpbin.org/json'
+          echo "Scenario: response MIME application/json is present in list valid_mime_type"
+          echo "URL: ${url}"
+          curl --fail-with-body --silent --show-error \
+            --dump-header listed-mime-headers.txt \
+            --output listed-mime-body.txt \
+            "${url}"
+          sed -n '1,20p' listed-mime-headers.txt
+
+  listed-package-version:
+    name: "MATCH - package version 4.18.2 (expect Warn)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: ${{ env.IR_STAGE_URL }}
+          app_token: ${{ secrets.IR_API_KEY }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Download the package version stored in valid_version
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Scenario: package version 4.18.2 is present in list valid_version"
+          npm pack express@4.18.2 --ignore-scripts
