@@ -47,9 +47,3 @@ jobs:
           name: archive
           path: archive.zip
           if-no-files-found: error
-
-
-      - name: Force workflow failure
-        run: |
-          echo "Intentionally failing workflow"
-          exit 1    
