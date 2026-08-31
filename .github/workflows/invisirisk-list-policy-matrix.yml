@@ -108,6 +108,9 @@ jobs:
     name: "MATCH - package version 4.18.2 (expect Warn)"
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the QA fixture
+        uses: actions/checkout@v4
+
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
@@ -119,9 +122,9 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Download the package version stored in valid_version
+      - name: Install the package version stored in valid_version
         shell: bash
         run: |
           set -euo pipefail
           echo "Scenario: package version 4.18.2 is present in list valid_version"
-          npm pack express@4.18.2 --ignore-scripts
+          npm install --prefix qa-policy-fixtures --ignore-scripts
