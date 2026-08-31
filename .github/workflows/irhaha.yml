@@ -33,14 +33,12 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t my-app:latest --build-arg BUILDKIT_SYNTAX=public.ecr.aws/w3c0c0n7/invisirisk/baf-buildkit:latest --secret id=pse-ca,src=${PSE_CA_CERT_PATH} --build-arg PSE_PROXY=http://${PSE_PROXY_IP}:3128 .
-
       - name: Extract archive from Docker image
         run: |
           container_id=$(docker create my-app:latest)
           docker cp "$container_id:/app/archive.zip" ./archive.zip
           docker rm "$container_id"
           ls -lh archive.zip
-
       - name: Upload archive artifact
         uses: actions/upload-artifact@v4
         with:
