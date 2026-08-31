@@ -2,6 +2,18 @@ name: InvisiRisk List Policy Runtime Matrix
 
 on:
   workflow_dispatch:
+    inputs:
+      scenario:
+        description: Which list-policy runtime scenario should run?
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - network
+          - package
+          - repo
+          - mixed-all
 
 permissions:
   actions: read
@@ -14,6 +26,7 @@ env:
 jobs:
   unlisted-control:
     name: "CONTROL - unlisted URL, host, and MIME (expect default Allow)"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
@@ -37,6 +50,7 @@ jobs:
 
   listed-url:
     name: "MATCH - URL https://example.com (expect Warn)"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
@@ -60,6 +74,7 @@ jobs:
 
   listed-host:
     name: "MATCH - host github.com (expect Warn)"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
@@ -83,6 +98,7 @@ jobs:
 
   listed-mime-type:
     name: "MATCH - MIME application/json (expect Warn)"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
@@ -105,7 +121,8 @@ jobs:
           sed -n '1,20p' listed-mime-headers.txt
 
   listed-package-version:
-    name: "MATCH - package version 4.18.2 (expect Warn)"
+    name: "MATCH - npm / express / 4.18.2 / download (expect Warn)"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package' }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out the QA fixture
@@ -127,4 +144,58 @@ jobs:
         run: |
           set -euo pipefail
           echo "Scenario: package version 4.18.2 is present in list valid_version"
+          echo "Package Name: express (valid_package_name)"
+          echo "Package Registry: npm (validpackage_registry)"
+          echo "Expected runtime Action: download (valid_actions)"
           npm install --prefix qa-policy-fixtures --ignore-scripts
+
+  listed-repo:
+    name: "MATCH - repo ir-bibekpradhan/JS-SNYK-cli (expect Deny)"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'repo' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: ${{ env.IR_STAGE_URL }}
+          app_token: ${{ secrets.IR_API_KEY }}
+
+      - name: Request the repository stored in qa_runtime_repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://github.com/ir-bibekpradhan/JS-SNYK-cli'
+          echo "Scenario: Repo ir-bibekpradhan/JS-SNYK-cli is present in qa_runtime_repo"
+          echo "URL: ${url}"
+          curl --fail-with-body --silent --show-error \
+            --dump-header listed-repo-headers.txt \
+            --output listed-repo-body.txt \
+            "${url}"
+          sed -n '1,20p' listed-repo-headers.txt
+
+  mixed-all:
+    name: "MATCH ALL - listed URL plus HTTP 404 (expect Warn)"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'mixed-all' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: ${{ env.IR_STAGE_URL }}
+          app_token: ${{ secrets.IR_API_KEY }}
+
+      - name: Request a listed URL that returns 404
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://github.com/example/project'
+          echo "Scenario: URL is in valid_url AND response status must be 404"
+          echo "URL: ${url}"
+          status=$(curl --silent --show-error \
+            --dump-header mixed-all-headers.txt \
+            --output mixed-all-body.txt \
+            --write-out '%{http_code}' \
+            "${url}")
+          sed -n '1,20p' mixed-all-headers.txt
+          echo "Observed HTTP status: ${status}"
+          test "${status}" = '404'
