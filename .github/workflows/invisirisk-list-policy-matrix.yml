@@ -32,8 +32,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: ${{ env.IR_STAGE_URL }}
-          app_token: ${{ secrets.IR_API_KEY }}
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: uKKWI4AFO2Fj_kwwrxkbstk_2ty3O8F3Dgw7n3AeayhafLhmQHMOhocjVMwybEEyc4YWzgJwuInSFQKrsYN8Pg
 
       - name: Request an unlisted value
         shell: bash
@@ -56,8 +56,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: ${{ env.IR_STAGE_URL }}
-          app_token: ${{ secrets.IR_API_KEY }}
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: uKKWI4AFO2Fj_kwwrxkbstk_2ty3O8F3Dgw7n3AeayhafLhmQHMOhocjVMwybEEyc4YWzgJwuInSFQKrsYN8Pg
 
       - name: Request the URL stored in valid_url
         shell: bash
@@ -80,8 +80,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: ${{ env.IR_STAGE_URL }}
-          app_token: ${{ secrets.IR_API_KEY }}
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: uKKWI4AFO2Fj_kwwrxkbstk_2ty3O8F3Dgw7n3AeayhafLhmQHMOhocjVMwybEEyc4YWzgJwuInSFQKrsYN8Pg
 
       - name: Request a path on the host stored in valid_hosts
         shell: bash
@@ -104,8 +104,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: ${{ env.IR_STAGE_URL }}
-          app_token: ${{ secrets.IR_API_KEY }}
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: uKKWI4AFO2Fj_kwwrxkbstk_2ty3O8F3Dgw7n3AeayhafLhmQHMOhocjVMwybEEyc4YWzgJwuInSFQKrsYN8Pg
 
       - name: Request content with a MIME type stored in valid_mime_type
         shell: bash
@@ -131,8 +131,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: ${{ env.IR_STAGE_URL }}
-          app_token: ${{ secrets.IR_API_KEY }}
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: uKKWI4AFO2Fj_kwwrxkbstk_2ty3O8F3Dgw7n3AeayhafLhmQHMOhocjVMwybEEyc4YWzgJwuInSFQKrsYN8Pg
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -157,8 +157,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: ${{ env.IR_STAGE_URL }}
-          app_token: ${{ secrets.IR_API_KEY }}
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: uKKWI4AFO2Fj_kwwrxkbstk_2ty3O8F3Dgw7n3AeayhafLhmQHMOhocjVMwybEEyc4YWzgJwuInSFQKrsYN8Pg
 
       - name: Request the repository stored in qa_runtime_repo
         shell: bash
@@ -181,8 +181,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: ${{ env.IR_STAGE_URL }}
-          app_token: ${{ secrets.IR_API_KEY }}
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: uKKWI4AFO2Fj_kwwrxkbstk_2ty3O8F3Dgw7n3AeayhafLhmQHMOhocjVMwybEEyc4YWzgJwuInSFQKrsYN8Pg
 
       - name: Request a listed URL that returns 404
         shell: bash
