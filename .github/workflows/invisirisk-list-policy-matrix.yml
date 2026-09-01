@@ -30,7 +30,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: E1rVuIgGslfMlbsIHYk4iYzffE2-Okxsbxr-0uqy-kkEWVstPMLqprTNkcuMP3rXwIAcijZZodrocg8mgxSGRQ
+          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
 
       - name: Request an unlisted value
         shell: bash
@@ -54,7 +54,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: E1rVuIgGslfMlbsIHYk4iYzffE2-Okxsbxr-0uqy-kkEWVstPMLqprTNkcuMP3rXwIAcijZZodrocg8mgxSGRQ
+          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
 
       - name: Request the URL stored in valid_url
         shell: bash
@@ -78,7 +78,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: E1rVuIgGslfMlbsIHYk4iYzffE2-Okxsbxr-0uqy-kkEWVstPMLqprTNkcuMP3rXwIAcijZZodrocg8mgxSGRQ
+          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
 
       - name: Request a path on the host stored in valid_hosts
         shell: bash
@@ -102,7 +102,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: E1rVuIgGslfMlbsIHYk4iYzffE2-Okxsbxr-0uqy-kkEWVstPMLqprTNkcuMP3rXwIAcijZZodrocg8mgxSGRQ
+          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
 
       - name: Request content with a MIME type stored in valid_mime_type
         shell: bash
@@ -129,7 +129,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: E1rVuIgGslfMlbsIHYk4iYzffE2-Okxsbxr-0uqy-kkEWVstPMLqprTNkcuMP3rXwIAcijZZodrocg8mgxSGRQ
+          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -155,7 +155,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: E1rVuIgGslfMlbsIHYk4iYzffE2-Okxsbxr-0uqy-kkEWVstPMLqprTNkcuMP3rXwIAcijZZodrocg8mgxSGRQ
+          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
 
       - name: Request the repository stored in qa_runtime_repo
         shell: bash
@@ -179,7 +179,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: E1rVuIgGslfMlbsIHYk4iYzffE2-Okxsbxr-0uqy-kkEWVstPMLqprTNkcuMP3rXwIAcijZZodrocg8mgxSGRQ
+          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
 
       - name: Request a listed URL that returns 404
         shell: bash
