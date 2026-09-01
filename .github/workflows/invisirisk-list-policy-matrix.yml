@@ -20,9 +20,6 @@ permissions:
   checks: write
   contents: read
 
-env:
-  IR_STAGE_URL: https://app.stage.invisirisk.com
-
 jobs:
   unlisted-control:
     name: "CONTROL - unlisted URL, host, and MIME (expect default Allow)"
