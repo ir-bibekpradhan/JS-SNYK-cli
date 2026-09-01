@@ -4,14 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       scenario:
-        description: Which list-policy runtime scenario should run?
+        description: Which isolated list-policy runtime scenario should run?
         required: true
         default: all
         type: choice
         options:
           - all
-          - network
-          - package
+          - url
+          - host
+          - mime
+          - package-registry
+          - package-name
+          - package-version
+          - package-action
           - repo
           - mixed-all
 
@@ -21,157 +26,252 @@ permissions:
   contents: read
 
 jobs:
-  unlisted-control:
-    name: "CONTROL - unlisted URL, host, and MIME (expect default Allow)"
-    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
+  url-listed:
+    name: "URL MATCH - listed https://example.com/"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'url' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
-
-      - name: Request an unlisted value
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request the listed URL
         shell: bash
         run: |
           set -euo pipefail
-          url='https://httpbin.org/response-headers?Content-Type=application%2Fx-invisirisk-qa-unlisted'
-          echo "Scenario: no configured list should match"
-          echo "URL: ${url}"
-          curl --fail-with-body --silent --show-error \
-            --dump-header control-headers.txt \
-            --output control-body.txt \
-            "${url}"
-          sed -n '1,20p' control-headers.txt
+          curl --fail-with-body --silent --show-error --output url-listed-body.txt 'https://example.com/'
 
-  listed-url:
-    name: "MATCH - URL https://example.com (expect Warn)"
-    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
+  url-unlisted:
+    name: "URL CONTROL - unlisted httpbin URL"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'url' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
-
-      - name: Request the URL stored in valid_url
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request an unlisted URL
         shell: bash
         run: |
           set -euo pipefail
-          url='https://example.com'
-          echo "Scenario: URL is present in list valid_url"
-          echo "URL: ${url}"
-          curl --fail-with-body --silent --show-error \
-            --dump-header listed-url-headers.txt \
-            --output listed-url-body.txt \
-            "${url}"
-          sed -n '1,20p' listed-url-headers.txt
+          curl --fail-with-body --silent --show-error --output url-unlisted-body.txt \
+            'https://httpbin.org/response-headers?X-InvisiRisk-QA=url-unlisted'
 
-  listed-host:
-    name: "MATCH - host github.com (expect Warn)"
-    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
+  host-listed:
+    name: "HOST MATCH - listed github.com"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'host' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
-
-      - name: Request a path on the host stored in valid_hosts
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request a path on the listed host
         shell: bash
         run: |
           set -euo pipefail
-          url='https://github.com/robots.txt'
-          echo "Scenario: Host github.com is present in list valid_hosts"
-          echo "URL: ${url}"
-          curl --fail-with-body --silent --show-error \
-            --dump-header listed-host-headers.txt \
-            --output listed-host-body.txt \
-            "${url}"
-          sed -n '1,20p' listed-host-headers.txt
+          curl --fail-with-body --silent --show-error --output host-listed-body.txt 'https://github.com/robots.txt'
 
-  listed-mime-type:
-    name: "MATCH - MIME application/json (expect Warn)"
-    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'network' }}
+  mime-listed:
+    name: "MIME MATCH - application/json"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'mime' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
-
-      - name: Request content with a MIME type stored in valid_mime_type
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request listed MIME content
         shell: bash
         run: |
           set -euo pipefail
-          url='https://httpbin.org/json'
-          echo "Scenario: response MIME application/json is present in list valid_mime_type"
-          echo "URL: ${url}"
-          curl --fail-with-body --silent --show-error \
-            --dump-header listed-mime-headers.txt \
-            --output listed-mime-body.txt \
-            "${url}"
-          sed -n '1,20p' listed-mime-headers.txt
+          curl --fail-with-body --silent --show-error --dump-header mime-listed-headers.txt \
+            --output mime-listed-body.txt 'https://httpbin.org/json'
+          sed -n '1,20p' mime-listed-headers.txt
 
-  listed-package-version:
-    name: "MATCH - npm / express / 4.18.2 / download (expect Warn)"
-    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package' }}
+  mime-unlisted:
+    name: "MIME CONTROL - application/x-invisirisk-qa-unlisted"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'mime' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the QA fixture
-        uses: actions/checkout@v4
-
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request unlisted MIME content
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --silent --show-error --dump-header mime-unlisted-headers.txt \
+            --output mime-unlisted-body.txt \
+            'https://httpbin.org/response-headers?Content-Type=application%2Fx-invisirisk-qa-unlisted'
+          sed -n '1,20p' mime-unlisted-headers.txt
 
+  package-registry-listed:
+    name: "REGISTRY MATCH - npm"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package-registry' }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
-      - name: Install the package version stored in valid_version
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "Scenario: package version 4.18.2 is present in list valid_version"
-          echo "Package Name: express (valid_package_name)"
-          echo "Package Registry: npm (validpackage_registry)"
-          echo "Expected runtime Action: download (valid_actions)"
-          npm install --prefix qa-policy-fixtures --ignore-scripts
-
-  listed-repo:
-    name: "MATCH - repo ir-bibekpradhan/JS-SNYK-cli (expect Deny)"
-    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'repo' }}
-    runs-on: ubuntu-latest
-    steps:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
-
-      - name: Request the repository stored in qa_runtime_repo
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Download from the listed npm registry
         shell: bash
         run: |
           set -euo pipefail
-          url='https://github.com/ir-bibekpradhan/JS-SNYK-cli'
-          echo "Scenario: Repo ir-bibekpradhan/JS-SNYK-cli is present in qa_runtime_repo"
-          echo "URL: ${url}"
-          curl --fail-with-body --silent --show-error \
-            --dump-header listed-repo-headers.txt \
-            --output listed-repo-body.txt \
-            "${url}"
-          sed -n '1,20p' listed-repo-headers.txt
+          mkdir -p "${RUNNER_TEMP}/registry-listed"
+          npm pack express@4.18.2 --ignore-scripts --pack-destination "${RUNNER_TEMP}/registry-listed"
 
-  mixed-all:
-    name: "MATCH ALL - listed URL plus HTTP 404 (expect Warn)"
+  package-name-listed:
+    name: "PACKAGE NAME MATCH - express"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package-name' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Download the listed package name
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/package-name-listed"
+          npm pack express@4.18.2 --ignore-scripts --pack-destination "${RUNNER_TEMP}/package-name-listed"
+
+  package-name-unlisted:
+    name: "PACKAGE NAME CONTROL - is-number"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package-name' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Download an unlisted package name
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/package-name-unlisted"
+          npm pack is-number@7.0.0 --ignore-scripts --pack-destination "${RUNNER_TEMP}/package-name-unlisted"
+
+  package-version-listed:
+    name: "VERSION MATCH - 4.18.2"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package-version' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Download the listed package version
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/package-version-listed"
+          npm pack express@4.18.2 --ignore-scripts --pack-destination "${RUNNER_TEMP}/package-version-listed"
+
+  package-version-unlisted:
+    name: "VERSION CONTROL - 4.19.2"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package-version' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Download an unlisted package version
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/package-version-unlisted"
+          npm pack express@4.19.2 --ignore-scripts --pack-destination "${RUNNER_TEMP}/package-version-unlisted"
+
+  package-action-listed:
+    name: "ACTION MATCH - package download"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'package-action' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Generate a package download action
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${RUNNER_TEMP}/action-listed"
+          npm pack express@4.18.2 --ignore-scripts --pack-destination "${RUNNER_TEMP}/action-listed"
+
+  repo-listed:
+    name: "REPO MATCH - ir-bibekpradhan/JS-SNYK-cli"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'repo' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection before Git activity
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Query the listed repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git ls-remote 'https://github.com/ir-bibekpradhan/JS-SNYK-cli.git' HEAD
+
+  repo-unlisted:
+    name: "REPO CONTROL - octocat/Hello-World"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'repo' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection before Git activity
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Query an unlisted repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git ls-remote 'https://github.com/octocat/Hello-World.git' HEAD
+
+  mixed-all-positive:
+    name: "ALL MATCH - listed URL plus HTTP 404"
     if: ${{ inputs.scenario == 'all' || inputs.scenario == 'mixed-all' }}
     runs-on: ubuntu-latest
     steps:
@@ -179,20 +279,69 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: "https://app.stage.invisirisk.com"
-          app_token: DNNxRMmiuummmFSDNMdX-OSEku_jLYpDMjYQdcKphterxguhtpr0jBy1oUKxNxJQSpLR1r6sHQDpN4ssL-EXEg
-
+          app_token: ${{ secrets.IR_API_KEY }}
       - name: Request a listed URL that returns 404
         shell: bash
         run: |
           set -euo pipefail
-          url='https://github.com/example/project'
-          echo "Scenario: URL is in valid_url AND response status must be 404"
-          echo "URL: ${url}"
-          status=$(curl --silent --show-error \
-            --dump-header mixed-all-headers.txt \
-            --output mixed-all-body.txt \
-            --write-out '%{http_code}' \
-            "${url}")
-          sed -n '1,20p' mixed-all-headers.txt
+          status=$(curl --silent --show-error --output mixed-all-positive-body.txt \
+            --write-out '%{http_code}' 'https://github.com/example/project')
           echo "Observed HTTP status: ${status}"
           test "${status}" = '404'
+
+  mixed-all-listed-200:
+    name: "ALL CONTROL - listed URL plus HTTP 200"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'mixed-all' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request a listed URL that returns 200
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=$(curl --silent --show-error --output mixed-all-listed-200-body.txt \
+            --write-out '%{http_code}' 'https://example.com/')
+          echo "Observed HTTP status: ${status}"
+          test "${status}" = '200'
+
+  mixed-all-unlisted-404:
+    name: "ALL CONTROL - unlisted URL plus HTTP 404"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'mixed-all' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request an unlisted URL that returns 404
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=$(curl --silent --show-error --output mixed-all-unlisted-404-body.txt \
+            --write-out '%{http_code}' 'https://httpbin.org/status/404')
+          echo "Observed HTTP status: ${status}"
+          test "${status}" = '404'
+
+  mixed-all-unlisted-200:
+    name: "ALL CONTROL - unlisted URL plus HTTP 200"
+    if: ${{ inputs.scenario == 'all' || inputs.scenario == 'mixed-all' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up InvisiRisk protection
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Request an unlisted URL that returns 200
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=$(curl --silent --show-error --output mixed-all-unlisted-200-body.txt \
+            --write-out '%{http_code}' 'https://httpbin.org/status/200')
+          echo "Observed HTTP status: ${status}"
+          test "${status}" = '200'
