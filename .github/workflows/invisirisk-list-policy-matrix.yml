@@ -34,8 +34,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request the listed URL
         shell: bash
         run: |
@@ -50,8 +50,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request an unlisted URL
         shell: bash
         run: |
@@ -67,8 +67,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request a path on the listed host
         shell: bash
         run: |
@@ -83,8 +83,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request listed MIME content
         shell: bash
         run: |
@@ -101,8 +101,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request unlisted MIME content
         shell: bash
         run: |
@@ -124,8 +124,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Download from the listed npm registry
         shell: bash
         run: |
@@ -145,8 +145,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Download the listed package name
         shell: bash
         run: |
@@ -166,8 +166,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Download an unlisted package name
         shell: bash
         run: |
@@ -187,8 +187,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Download the listed package version
         shell: bash
         run: |
@@ -208,8 +208,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Download an unlisted package version
         shell: bash
         run: |
@@ -229,8 +229,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Generate a package download action
         shell: bash
         run: |
@@ -246,8 +246,8 @@ jobs:
       - name: Set up InvisiRisk protection before Git activity
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Query the listed repository
         shell: bash
         run: |
@@ -262,8 +262,8 @@ jobs:
       - name: Set up InvisiRisk protection before Git activity
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Query an unlisted repository
         shell: bash
         run: |
@@ -278,8 +278,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request a listed URL that returns 404
         shell: bash
         run: |
@@ -297,8 +297,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request a listed URL that returns 200
         shell: bash
         run: |
@@ -316,8 +316,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request an unlisted URL that returns 404
         shell: bash
         run: |
@@ -335,8 +335,8 @@ jobs:
       - name: Set up InvisiRisk protection
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: wLsJU2O3TCbz-qOsUKO8Oifw1pmnpDZ05s-6aZsiYbvMAjQUSHTj_yfKvF_AjaXvlPSVMtMh2lkzeVPh6seyFA
+          api_url: "https://app.invisirisk.com"
+          app_token: UExiV2c7QoBe7SfVd1dhCn5efUg8ZdyscReZ15tzJ-0aej5_fXn88WBSmfFo5XXxwDGWKuEe03Y1ohg5I4wFAQ
       - name: Request an unlisted URL that returns 200
         shell: bash
         run: |
