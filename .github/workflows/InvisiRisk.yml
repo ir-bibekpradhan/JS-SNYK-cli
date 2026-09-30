@@ -7,6 +7,7 @@ permissions:
   checks: write
   contents: read
   actions: read
+  id-token: write
  
 jobs:
   sync-and-build:
@@ -17,9 +18,6 @@ jobs:
       # ============= InvisiRisk Setup =============
       - name: Setup PSE
         uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.stage.invisirisk.com" 
-          app_token: ${{secrets.IR_API_KEY}}
       # ============= InvisiRisk Setup End =============
       - name: Checkout repository
         uses: actions/checkout@v4
